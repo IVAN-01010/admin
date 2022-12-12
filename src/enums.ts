@@ -24,12 +24,20 @@ const user = {
 };
 const report = {
   id: "id",
+  none_exists: "none_exists",
+  child_pornography: "child_pornography",
+  drugs: "drugs",
+  terrorist: "terrorist",
+  language_error: "language_error",
+  theft: "theft",
+  occupy_screen: "occupy_screen",
+  ad_competitor: "ad_competitor",
+  other: "other",
   channel_id: "channel_id",
   scam: "scam",
   pull_fans: "pull_fans",
   personal_link: "personal_link",
   spam: "spam",
-  none_exists: "none_exists",
 };
 const like = {
   user_id: "user_id",

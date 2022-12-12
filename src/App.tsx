@@ -1,11 +1,14 @@
 // in src/admin/index.tsx
-import { Admin, Resource } from "react-admin";
+import { Admin, ListGuesser, Resource } from "react-admin";
 import { supabaseDataProvider } from "./supabaseDataProvider";
 import { supabase } from "./supabase";
 import ChannelsList from "./components/channels/channelsList";
 import ChannelEdit from "./components/channels/editChannel";
 import { channel, dislike, like, report, user } from "./enums";
 import i18Provider from "./i18provider";
+import ReportsList from "./components/reports/reportsList";
+import CreateReport from "./components/reports/createReport";
+import UsersList from "./components/users/usersList";
 
 const resources = {
   channels: Object.keys(channel),
@@ -27,10 +30,10 @@ const App = () => (
     <Resource name="channels" list={ChannelsList} edit={ChannelEdit} />
     <Resource
       name="users"
-      recordRepresentation={(record) =>
-        `${record[user.first_name]}-${record[user.telegram_id]}}`
-      }
+      recordRepresentation={user.telegram_id}
+      list={UsersList}
     />
+    <Resource name="reports" list={ReportsList} create={CreateReport} />
   </Admin>
 );
 

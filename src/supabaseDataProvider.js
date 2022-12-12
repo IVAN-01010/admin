@@ -1,28 +1,29 @@
 import { DataProvider, GetListParams } from "ra-core";
 import { SupabaseClient } from "@supabase/supabase-js";
-
 export const supabaseDataProvider = (
   client: SupabaseClient,
   resources: ResourcesOptions
 ): DataProvider => ({
   getList: async (resource, params) => {
+
     const resourceOptions = getResourceOptions(resource, resources);
     return getList({ client, resource, resourceOptions, params });
   },
   getOne: async (resource, { id }) => {
     const resourceOptions = getResourceOptions(resource, resources);
+    console.debug();
 
     const { data, error } = await client
       .from(resourceOptions.table)
       .select(resourceOptions.fields.join(", "))
-      .match({ id })
+      .match(resourceOptions.table === "users" ? ({ telegram_id: id }) : ({ id }))
       .single();
 
     if (error) {
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id") {
+    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
       return { data };
     }
 
@@ -30,11 +31,10 @@ export const supabaseDataProvider = (
   },
   getMany: async (resource, { ids }) => {
     const resourceOptions = getResourceOptions(resource, resources);
-
     const { data, error } = await client
       .from(resourceOptions.table)
       .select(resourceOptions.fields.join(", "))
-      .in("id", ids);
+      .in(resourceOptions.table === "users" ? "telegram_id" : "id", ids);
 
     if (error) {
       throw error;
@@ -43,7 +43,7 @@ export const supabaseDataProvider = (
   },
   getManyReference: async (resource, originalParams) => {
     const resourceOptions = getResourceOptions(resource, resources);
-    const { target, id } = originalParams;
+    const { target, id } = originalParams;// sort.field = "id" error make primary key
     const params = {
       ...originalParams,
       filter: { ...originalParams.filter, [target]: id },
@@ -61,7 +61,7 @@ export const supabaseDataProvider = (
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id") {
+    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
       return { data: record };
     }
 
@@ -72,14 +72,14 @@ export const supabaseDataProvider = (
     const { data: record, error } = await client
       .from(resourceOptions.table)
       .update(data)
-      .match({ id })
+      .match(resourceOptions.table === "users" ? ({ telegram_id: id }) : ({ id }))
       .single();
 
     if (error) {
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id") {
+    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
       return { data: record };
     }
 
@@ -90,7 +90,7 @@ export const supabaseDataProvider = (
     const { data: records, error } = await client
       .from(resourceOptions.table)
       .update(data)
-      .in("id", ids);
+      .in(resourceOptions.table === "users" ? "telegram_id" : "id", ids);
 
     if (error) {
       throw error;
@@ -104,14 +104,14 @@ export const supabaseDataProvider = (
     const { data: record, error } = await client
       .from(resourceOptions.table)
       .delete()
-      .match({ id })
+      .match(resourceOptions.table === "users" ? ({ telegram_id: id }) : ({ id }))
       .single();
 
     if (error) {
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id") {
+    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
       return { data: record };
     }
 
@@ -122,13 +122,13 @@ export const supabaseDataProvider = (
     const { data: records, error } = await client
       .from(resourceOptions.table)
       .delete()
-      .in("id", ids);
+      .in(resourceOptions.table === "users" ? "telegram_id" : "id", ids);
 
     if (error) {
       throw error;
     }
     return {
-      data: records?.map((record) => record[resourceOptions.primaryKey]),
+      data: records?.((record) => record[resourceOptions.primaryKey]),
     };
   },
 });
@@ -161,14 +161,11 @@ const getList = async ({
     sort,
     filter: { q, ...filter },
   } = params;
-
   const rangeFrom = (pagination.page - 1) * pagination.perPage;
   const rangeTo = rangeFrom + pagination.perPage;
-
   let query = client
     .from(resourceOptions.table)
     .select(resourceOptions.fields.join(", "), { count: "exact" })
-    .order(sort.field, { ascending: sort.order === "ASC" })
     .match(filter)
     .range(rangeFrom, rangeTo);
 
@@ -187,7 +184,8 @@ const getList = async ({
   if (error) {
     throw error;
   }
-  return {
+  const res =
+  {
     data:
       resourceOptions.primaryKey === "id"
         ? data
@@ -197,6 +195,8 @@ const getList = async ({
         })) ?? [],
     total: count ?? 0,
   };
+
+  return res;
 };
 
 const getResourceOptions = (
@@ -208,7 +208,7 @@ const getResourceOptions = (
   if (Array.isArray(resourceOptions)) {
     return {
       table: resource,
-      primaryKey: "id",
+      primaryKey: resource === "users" ? "telegram_id" : "id",
       fields: resourceOptions,
       fullTextSearchFields: resourceOptions,
     };
