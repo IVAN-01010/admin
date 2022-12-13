@@ -28,7 +28,10 @@ const InfoList = ({ setImage }) => {
       <Datagrid
         rowClick={"toggleSelection"}
         onToggleItem={(id) => {
-          setImage(record.info.filter((i) => i.id === id).shift() || {});
+          const data = record.info.filter((i) => i.id === id).shift();
+          if (!!data || data.blob_url) {
+            setImage(data);
+          }
         }}
       >
         <ReferenceManyField
