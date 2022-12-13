@@ -1,5 +1,5 @@
 // in src/admin/index.tsx
-import { Admin, ListGuesser, Resource } from "react-admin";
+import { Admin, Resource } from "react-admin";
 import { supabaseDataProvider } from "./supabaseDataProvider";
 import { supabase } from "./supabase";
 import ChannelsList from "./components/channels/channelsList";
@@ -7,15 +7,37 @@ import ChannelEdit from "./components/channels/editChannel";
 import { channel, dislike, like, report, user } from "./enums";
 import i18Provider from "./i18provider";
 import ReportsList from "./components/reports/reportsList";
-import CreateReport from "./components/reports/createReport";
 import UsersList from "./components/users/usersList";
+import ReportShow from "./components/reports/showReport";
+interface ResourceOptions {
+  table?: string;
+  primaryKey?: string;
+  fields: string[];
+  fullTextSearchFields?: string[];
+}
 
-const resources = {
-  channels: Object.keys(channel),
-  users: Object.keys(user),
-  likes: Object.keys(like),
-  dislikes: Object.keys(dislike),
-  reports: Object.keys(report),
+const resources: { [x: string]: ResourceOptions | string[] } = {
+  channels: {
+    fields: Object.keys(channel),
+    primaryKey: channel.id,
+    fullTextSearchFields: [channel.title, channel.description, channel.tags],
+  },
+  users: {
+    fields: Object.keys(user),
+    primaryKey: user.telegram_id,
+    table: "users",
+  },
+  likes: {
+    fields: Object.keys(like),
+  },
+  dislikes: {
+    fields: Object.keys(dislike),
+  },
+  reports: {
+    fields: Object.keys(report),
+    primaryKey: report.id,
+    table: "reports",
+  },
 };
 
 const dummyI18nProvider = {
@@ -33,7 +55,7 @@ const App = () => (
       recordRepresentation={user.telegram_id}
       list={UsersList}
     />
-    <Resource name="reports" list={ReportsList} create={CreateReport} />
+    <Resource name="reports" list={ReportsList} show={ReportShow} />
   </Admin>
 );
 

@@ -1,4 +1,3 @@
-import { Typography } from "@material-ui/core";
 import React, { ReactElement } from "react";
 import {
   Datagrid,

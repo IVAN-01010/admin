@@ -6,6 +6,8 @@ import {
   ReferenceInput,
   ReferenceManyField,
   SimpleForm,
+  SingleFieldList,
+  TextField,
   TextInput,
 } from "react-admin";
 import { channel, user } from "../../enums";
@@ -21,7 +23,15 @@ const ChannelEdit = () => (
           justifyContent: "space-around",
         }}
       >
-        <TextInput source={channel.id} disabled />
+        <ReferenceManyField
+          source={channel.user_id}
+          target={user.telegram_id}
+          reference="users"
+        >
+          <SingleFieldList>
+            <TextInput disabled source={user.first_name} />
+          </SingleFieldList>
+        </ReferenceManyField>
         <TextInput source={channel.type} />
         <TextInput source={channel.status} />
         <TextInput source={channel.members} />

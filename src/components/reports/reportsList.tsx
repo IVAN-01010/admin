@@ -1,36 +1,40 @@
 import {
   Datagrid,
+  DatagridConfigurable,
   DeleteButton,
   EditButton,
   List,
+  NumberField,
+  SelectColumnsButton,
   ShowButton,
   TextField,
+  TopToolbar,
 } from "react-admin";
-import { report } from "../../enums";
+import { reportList as report } from "../../enums";
 
-const ReportsList = () => (
-  <List perPage={100}>
-    <Datagrid>
-      <TextField source={report.id} />
-      <TextField source={report.none_exists} />
-      <TextField source={report.child_pornography} />
-      <TextField source={report.drugs} />
-      <TextField source={report.terrorist} />
-      <TextField source={report.language_error} />
-      <TextField source={report.theft} />
-      <TextField source={report.occupy_screen} />
-      <TextField source={report.ad_competitor} />
-      <TextField source={report.other} />
-      <TextField source={report.channel_id} />
-      <TextField source={report.scam} />
-      <TextField source={report.pull_fans} />
-      <TextField source={report.personal_link} />
-      <TextField source={report.spam} />
-
-      <ShowButton />
-      <EditButton label="" />
-      <DeleteButton label="" redirect={false} />
-    </Datagrid>
-  </List>
-);
+const ReportsList = () => {
+  return (
+    <List
+      perPage={100}
+      actions={
+        <TopToolbar>
+          <SelectColumnsButton />
+        </TopToolbar>
+      }
+    >
+      <DatagridConfigurable>
+        <TextField textAlign="center" source={report.channel_id} />
+        <NumberField source={report.pull_fans} textAlign="center" />
+        <NumberField textAlign="center" source={report.child_pornography} />
+        <NumberField textAlign="center" source={report.scam} />
+        <NumberField textAlign="center" source={report.theft} />
+        <NumberField textAlign="center" source={report.personal_link} />
+        <NumberField textAlign="center" source={report.other} />
+        <ShowButton />
+        <EditButton label="" />
+        <DeleteButton label="" redirect={false} />
+      </DatagridConfigurable>
+    </List>
+  );
+};
 export default ReportsList;
