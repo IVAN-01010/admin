@@ -1,5 +1,4 @@
 import {
-  Datagrid,
   DatagridConfigurable,
   DeleteButton,
   EditButton,

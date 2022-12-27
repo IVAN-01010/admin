@@ -67,9 +67,12 @@ const ChannelsList = () => {
     >
       <DatagridConfigurable rowClick={"edit"}>
         <TextField source={channel.id} />
+        <TextField source={channel.order} />
         <TextField source={channel.language} />
         <TextField source={channel.title} />
         <TextField source={channel.members} />
+        <TextField source={channel.tags} />
+
         <TextField source={channel.status} />
         <TextField source={channel.type} />
         <ReferenceManyField

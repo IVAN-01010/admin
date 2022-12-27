@@ -1,4 +1,5 @@
 const channel = {
+  order: "order",
   id: "id",
   user_id: "user_id",
   channel_id: "channel_id",

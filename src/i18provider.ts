@@ -1,7 +1,6 @@
-import { I18nProvider, Locale } from "react-admin";
+import polyglotI18nProvider from "ra-i18n-polyglot";
 import en from "./i18n/en";
 import zh from "./i18n/zh";
-import polyglotI18nProvider from "ra-i18n-polyglot";
 
 const messages = {
   zh: zh,

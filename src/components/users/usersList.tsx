@@ -1,13 +1,10 @@
-import React, { ReactElement } from "react";
 import {
   Datagrid,
   DeleteButton,
   EditButton,
   List,
-  ReferenceManyField,
   ShowButton,
   TextField,
-  useListContext,
 } from "react-admin";
 import { user } from "../../enums";
 

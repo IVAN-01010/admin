@@ -37,6 +37,7 @@ const ChannelEdit = () => (
         <TextInput source={channel.members} />
       </div>
 
+      <TextInput source={channel.order} fullWidth />
       <TextInput source={channel.title} fullWidth />
       <TextInput multiline source={channel.description} fullWidth />
       <TextInput source={channel.link} fullWidth />
