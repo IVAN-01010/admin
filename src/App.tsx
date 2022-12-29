@@ -28,7 +28,7 @@ const resources: { [x: string]: ResourceOptions | string[] } = {
   channels: {
     fields: Object.keys(channel),
     primaryKey: channel.id,
-    fullTextSearchFields: [channel.title, channel.description, channel.tags],
+    fullTextSearchFields: [channel.title],
   },
   users: {
     fields: Object.keys(user),
@@ -69,6 +69,26 @@ const theme: RaThemeOptions = {
   ...defaultTheme,
   palette: {
     mode: "dark", // Switching the dark mode on is a single property value change.
+  },
+};
+export const themeOptions: RaThemeOptions = {
+  palette: {
+    mode: "dark",
+    primary: {
+      main: "#0df350",
+      contrastText: "#000000",
+    },
+    secondary: {
+      main: "#00a9a5",
+    },
+    error: {
+      main: "#b71c1c",
+    },
+    background: {
+      default: "#121212",
+      // default: "#020202",
+      paper: "#202122",
+    },
   },
 };
 /**
@@ -112,7 +132,7 @@ interface userPermissions {
 }
 const App = () => (
   <Admin
-    theme={theme}
+    theme={themeOptions}
     dataProvider={dataProvider}
     authProvider={authProvider}
     i18nProvider={i18Provider}
