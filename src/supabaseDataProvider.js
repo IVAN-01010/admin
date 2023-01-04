@@ -74,7 +74,7 @@ export const supabaseDataProvider = (
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
+    if (resourceOptions.primaryKey === "id") {
       return { data: record };
     }
 
@@ -92,7 +92,7 @@ export const supabaseDataProvider = (
       throw error;
     }
 
-    if (resourceOptions.primaryKey === "id" || resourceOptions.primaryKey === "telegram_id") {
+    if (resourceOptions.primaryKey === "id") {
       return { data: record };
     }
 
@@ -103,7 +103,7 @@ export const supabaseDataProvider = (
     const { data: records, error } = await client
       .from(resourceOptions.table)
       .update(data)
-      .in(resourceOptions.table === "users" ? "telegram_id" : "id", ids);
+      .in(resourceOptions.primaryKey, ids);
 
     if (error) {
       throw error;

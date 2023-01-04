@@ -24,3 +24,5 @@ yarn-error.log*
 
 *.i.*
 *.i
+
+.env

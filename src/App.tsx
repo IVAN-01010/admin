@@ -17,6 +17,7 @@ import ReportsList from "./components/reports/reportsList";
 import UsersList from "./components/users/usersList";
 import ReportShow from "./components/reports/showReport";
 import { FirebaseAuthProvider } from "react-admin-firebase";
+import { firebaseConfig } from "./firebase.conf";
 interface ResourceOptions {
   table?: string;
   primaryKey?: string;
@@ -54,17 +55,7 @@ const dummyI18nProvider = {
   getLocale: () => "en",
 };
 export const dataProvider = supabaseDataProvider(supabase, resources);
-export const authProvider = FirebaseAuthProvider(
-  {
-    apiKey: "AIzaSyAJtieVAzOw-n0M4b6D7cDOcaq83ThCYc8",
-    authDomain: "wesam70e.firebaseapp.com",
-    projectId: "wesam70e",
-    storageBucket: "wesam70e.appspot.com",
-    messagingSenderId: "855163308",
-    appId: "1:855163308:web:71f8d0404f4c95f086fa09",
-  },
-  {}
-);
+export const authProvider = FirebaseAuthProvider(firebaseConfig, {});
 const theme: RaThemeOptions = {
   ...defaultTheme,
   palette: {
