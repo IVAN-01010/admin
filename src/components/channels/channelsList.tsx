@@ -26,6 +26,18 @@ const ChannelFilter = [
     alwaysOn
     fullWidth
   />,
+  <TextInput
+    label="link"
+    source={channel.link}
+    placeholder="Search for channel link"
+    fullWidth
+  />,
+  <TextInput
+    label="id"
+    source={channel.id}
+    placeholder="Search for channel id"
+    fullWidth
+  />,
   <SelectInput
     source={channel.type}
     title="Type"

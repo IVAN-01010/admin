@@ -38,9 +38,10 @@ const ChannelEdit = () => (
       </div>
 
       <TextInput source={channel.order} fullWidth />
+      <TextInput source={channel.link} fullWidth />
       <TextInput source={channel.title} fullWidth />
       <TextInput multiline source={channel.description} fullWidth />
-      <TextInput source={channel.link} fullWidth />
+      <TextInput multiline source={channel.tags} fullWidth />
     </SimpleForm>
   </Edit>
 );
