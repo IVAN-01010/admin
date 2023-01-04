@@ -68,7 +68,7 @@ const ChannelsList = () => {
   return (
     // @ts-ignore
     <List
-      perPage={50}
+      perPage={100}
       filters={ChannelFilter}
       actions={
         <TopToolbar>
