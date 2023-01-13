@@ -30,7 +30,6 @@ const ReportsList = () => {
         <NumberField textAlign="center" source={report.personal_link} />
         <NumberField textAlign="center" source={report.other} />
         <ShowButton />
-        <EditButton label="" />
         <DeleteButton label="" redirect={false} />
       </DatagridConfigurable>
     </List>

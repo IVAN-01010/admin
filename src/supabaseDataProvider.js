@@ -82,10 +82,13 @@ export const supabaseDataProvider = (
   },
   update: async (resource, { id, data }) => {
     const resourceOptions = getResourceOptions(resource, resources);
+    const recordData = resourceOptions.fields.reduce((cur, c) => {
+      return { ...cur, [c]: data[c] };
+    }, {})
     const { data: record, error } = await client
       .from(resourceOptions.table)
-      .update(data)
-      .match(resourceOptions.table === "users" ? ({ telegram_id: id }) : ({ id }))
+      .upsert(recordData)
+      .select()
       .single();
 
     if (error) {
